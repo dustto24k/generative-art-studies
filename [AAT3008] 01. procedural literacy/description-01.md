@@ -8,11 +8,11 @@
 
 Create one your own Process & implement it. - What is a good Process?
 
-1. Can it lead to new findings?                   
+(1) Can it lead to new findings?．．．．．．．．．
 
-2. Is it clear enough to be implemented by others?
+(2) Is it clear enough to be implemented by others?
 
-3. Does it provide enough room for open results?  
+(3) Does it provide enough room for open results?
 
 </div>
 
@@ -32,7 +32,6 @@ Decide the range of the number of metro lines and stations per line you want the
 
 3. Angle formed by a single line must be at least 90°.
 
-<br></br>
 As long as it doesn't break the rules, the next station's position is randomly chosen within the possible options. Generation process terminates if the line reaches its designated number of stations, or it doesn't have any valid positions remaining.
 
 ## Brief Explanation
