@@ -1,20 +1,18 @@
-<div align ="center">
-
 # Metro Map Generator
 
 ### Project 1: Procedural Literacy
 
-![banner](https://github.com/dustto24k/weekly-p5js-23FW/assets/105871083/37d8820d-b123-4472-9a22-31b9056ed71d)
+<img src="https://github.com/dustto24k/weekly-p5js-23FW/assets/105871083/37d8820d-b123-4472-9a22-31b9056ed71d" width="50%" height="50%">
 
-Create one your own Process & implement it. - What is a good Process?
+\> Here is a direct [link](https://editor.p5js.org/dus24k/sketches/v6nHrgN3I) to p5js sketch
 
-(1) Can it lead to new findings?．．．．．．．．．
+#### Create one your own Process & implement it. - What is a good Process?
 
-(2) Is it clear enough to be implemented by others?
-
-(3) Does it provide enough room for open results?
-
-</div>
+>(1) Can it lead to new findings?
+>
+>(2) Is it clear enough to be implemented by others?
+>
+>(3) Does it provide enough room for open results?
 
 ## Process
 
@@ -55,3 +53,4 @@ As long as it doesn't break the rules, the next station's position is randomly c
 ![examples](https://github.com/dustto24k/weekly-p5js-23FW/assets/105871083/3217da81-40cd-4357-bf47-597b660d0398)
 
 </div>
+<br></br>
