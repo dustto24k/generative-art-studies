@@ -92,7 +92,7 @@ void draw() {
       for (int j = 0; j < 8; j++) {
         pushMatrix();
           translate((i-3.5)*tileSize, 0, (j-3.5)*tileSize);
-          fill((i+j)%2 * 255);
+          fill((i+j+1)%2 * 255);
           box(tileSize, 10, tileSize);
         popMatrix();
       }
@@ -290,6 +290,8 @@ void make_arrows(String str, int idx) {
             
             if (role == 5){
               pos = findValidPawnByCol(turn, row, col);
+              
+              if (pos == -1) break;
               srcx = pieces[turn*6+5][pos][0];
               srcy = pieces[turn*6+5][pos][1];
               dstx = col; dsty = row;
