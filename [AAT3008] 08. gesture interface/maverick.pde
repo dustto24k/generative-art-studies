@@ -1,13 +1,25 @@
+import java.util.List;
 import processing.video.*;
 import oscP5.*;
 Capture cam;
 OscP5 oscP5;
 
-int steer = 2;
+List<PImage> jetSpr = new ArrayList<PImage>();
+
+float steer = 0;
+float tilt = 0;
 
 void setup() {
   size(1280, 960);
-  windowMove(320, 40);
+  // windowMove(320, 40);
+  
+  imageMode(CENTER);
+  rectMode(CENTER);
+  
+  for (int i = 0; i < 15; i++) {
+    PImage tmp = loadImage("src/jet_"+i+".png");
+    jetSpr.add(tmp);
+  }
 
   String[] cameras = Capture.list();
   
@@ -28,20 +40,21 @@ void setup() {
 
 void draw() {
   if (cam.available()) cam.read();
-  background(0); image(cam, 0, 0, width, height);
-  
+  background(0); image(cam, width/2, height/2, width, height);
+  draw_jet();
+}
+
+void draw_jet() {
+  int idx = floor( map(steer, -1.3, 1.3, 0, 14.99) );
+  int ypos = height/2+150 + floor( map(tilt, -1.3, 1.3, -300, 300) );
+  image(jetSpr.get(idx), width/2, ypos);
 }
 
 void oscEvent(OscMessage m) {
   if (m.checkAddrPattern("/wek/outputs")==true) {
-    if (m.checkTypetag("f")) {
-      steer = m.get(0).intValue();
-      
-      if (steer == 1) {
-        
-      } else if (steer == 3) {
-        
-      }
+    if (m.checkTypetag("ff")) {
+      steer = m.get(0).floatValue();
+      tilt = m.get(1).floatValue();
     }
   }
 }

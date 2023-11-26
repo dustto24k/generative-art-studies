@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<OSCInputGroup>
+  <oscMessage>/oschook</oscMessage>
+  <numInputs>4</numInputs>
+  <groupName>Inputs</groupName>
+  <inputNames>
+    <string>oschook-1</string>
+    <string>oschook-2</string>
+    <string>oschook-3</string>
+    <string>oschook-4</string>
+  </inputNames>
+</OSCInputGroup>
