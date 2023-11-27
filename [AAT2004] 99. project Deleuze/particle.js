@@ -1,5 +1,6 @@
 class Particle {
   constructor() {
+    this.idx = univ.length;
     this.position = createVector(random(width), random(height));
     this.velocity = p5.Vector.random2D();
     this.velocity.setMag(random(2, 4));
@@ -7,8 +8,12 @@ class Particle {
     this.maxSpeed = 3;
 
     this.ISCELL = false;
+    this.ISCENTER = false;
+    this.CELLBORN = 36000;
     this.CELLNUM = -1;
-    this.CELLPOS = createVector(0, 0);
+    this.CELLPOS = createVector();
+
+    this.c = color(random(100, 255), random(100, 255), random(100, 255));
   }
 
   edges() {
@@ -25,75 +30,76 @@ class Particle {
   }
 
   merge() {
-    if (this.ISCELL) return;
-
-    let r = 30;
-    let cnt = 0;
-    for (let other of univ) {
-      if (other.ISCELL || other == this) continue;
-      let d = dist(
-        this.position.x,
-        this.position.y,
-        other.position.x,
-        other.position.y
-      );
-      if (d < r) cnt++;
-    }
-
-    if (cnt > 5) {
+    if (!this.ISCELL) {
+      let cparts = [];
+      let r = 30;
+      let cnt = 0;
       for (let other of univ) {
-        if (other.ISCELL || other == this) continue;
-        let d = dist(
-          this.position.x,
-          this.position.y,
-          other.position.x,
-          other.position.y
-        );
-
-        if (d < r) {
-          let c = new Cell(this.position, this.velocity);
-          cells.push(c);
-
-          other.CELLNUM = cells.length - 1;
-          other.CELLPOS = this.position - other.position;
-          other.ISCELL = true;
-
-          cells[other.CELLNUM].v.push(other.position);
+        if (other != this && !other.ISCELL) {
+          let d = dist(
+            this.position.x,
+            this.position.y,
+            other.position.x,
+            other.position.y
+          );
+          if (d < r) {
+            cnt++;
+            cparts.push(other.idx);
+          }
+          if (cnt > 4) break;
         }
       }
 
-      this.CELLNUM = cells.length - 1;
-      this.CELLPOS = 0;
-      this.ISCELL = true;
+      if (cnt > 4) {
+        for (let i of cparts) {
+          univ[i].ISCELL = true;
+          univ[i].ISCENTER = false;
+          univ[i].CELLNUM = this.idx;
+          univ[i].CELLBORN = frameCount;
+          univ[i].CELLPOS = p5.Vector.sub(univ[i].position, this.position);
+        }
 
-      cells[this.CELLNUM].v.push(this.position);
+        this.ISCENTER = true;
+        this.CELLNUM = this.idx;
+        this.CELLBORN = frameCount;
+        this.CELLPOS = createVector(0, 0);
+      }
     }
   }
 
   update() {
-    if (!this.ISCELL) {
-      // tmp
+    if (this.ISCENTER || !this.ISCELL) {
       this.acceleration.add(random(-2, 2), random(-2, 2));
 
       this.position.add(this.velocity);
       this.velocity.add(this.acceleration);
       this.velocity.limit(this.maxSpeed);
+
+      if (frameCount - this.CELLBORN > 300 && this.ISCENTER)
+        this.ISCENTER = false;
     } else {
-      this.position.add(cells[this.CELLNUM].velocity);
-      this.velocity.add(cells[this.CELLNUM].acceleration);
-      this.velocity.limit(this.maxSpeed);
+      if (frameCount - this.CELLBORN > 300) {
+        this.position.add(this.velocity);
+        this.velocity.add(this.CELLPOS);
+        this.velocity.limit(this.maxSpeed * 2);
+        if (frameCount - this.CELLBORN > 330) this.ISCELL = false;
+      } else {
+        this.position.add(univ[this.CELLNUM].velocity);
+        this.velocity.add(univ[this.CELLNUM].acceleration);
+        this.velocity.limit(this.maxSpeed);
+      }
     }
   }
 
   show() {
     strokeWeight(6);
 
-    if (!this.ISCELL) {
+    if (!this.ISCELL && !this.ISCENTER) {
       stroke(255);
-      point(this.position.x, this.position.y);
+    } else {
+      stroke(univ[this.CELLNUM].c);
     }
-    // else {
-    //   stroke(cells[this.CELLNUM].c);
-    // }
+
+    point(this.position.x, this.position.y);
   }
 }
