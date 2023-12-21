@@ -8,6 +8,8 @@ void draw_grid() {
         else fill(255);
         rect(space*(i+0.5), space*(j+0.5), space, space);}}
     
+    fill(0, 255, 0); rect(space*(start/unit+0.5), space*(start%unit+0.5), space, space);
+    fill(255, 0, 0); rect(space*(goal/unit+0.5), space*(goal%unit+0.5), space, space);
     noFill(); rect(width/2, height/2, width-2, height-2);
 }
 
@@ -32,6 +34,14 @@ void reset() {
   particle = new Particle();
   buildBarrier();
   
+  openSet = new ArrayList<Spot>();
+  closedSet = new ArrayList<Spot>();
+  
+  start = floor(random(0, unit*unit-1)); goal = start;
+  while(start == goal) goal = floor(random(0, unit*unit-1));
+  grid[start/unit][start%unit] = true; grid[goal/unit][goal%unit] = true;
+  
+  PATH_FOUND = false;
   INITIATE = false;
   SANDBOX = true;
 }
